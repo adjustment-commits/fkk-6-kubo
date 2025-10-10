@@ -118,6 +118,24 @@ footer {
   color:#888;
   font-size:0.85em;
 }
+/* summary＋ボタンの横並びを維持 */
+summary.summary-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  list-style:none;
+  color:#ff0;
+  font-weight:bold;
+  font-size:1.05em;
+  cursor:pointer;
+  padding:6px 0;
+}
+
+/* スマホでの開閉時に背景を強調 */
+details[open] summary {
+  background:rgba(255,255,0,0.1);
+  border-radius:4px;
+}
 </style>
 </head>
 <body>
@@ -129,10 +147,11 @@ footer {
 
 <!-- ==== 各ドリル ==== -->
 <section>
-  <div class="header-row">
-    <summary>① リブケージ・デッドバグ</summary>
-    <button class="check" onclick="addLog(this)">□ 実施</button>
-  </div>
+  <details>
+    <summary class="summary-row">
+    <span>① リブケージ・デッドバグ</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary> 
   <details>
     <img src="images/deadbug-1.jpg" alt="リブケージ・デッドバグ">
     <p><b>目的：</b>骨盤と肋骨の波動連動で四肢を制御する。</p>
@@ -142,10 +161,11 @@ footer {
 </section>
 
 <section>
-  <div class="header-row">
-    <summary>② リブケージ・バウンス</summary>
-    <button class="check" onclick="addLog(this)">□ 実施</button>
-  </div>
+  <details>
+    <summary class="summary-row">
+    <span>② リブケージ・バウンス</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
   <details>
     <img src="images/bounce-1.jpg" alt="リブケージ・バウンス">
     <p><b>目的：</b>肋骨の圧縮反射で上下のバネ反応を高める。</p>
@@ -155,10 +175,11 @@ footer {
 </section>
 
 <section>
-  <div class="header-row">
-    <summary>③ ステップ台ヒップドリフト</summary>
-    <button class="check" onclick="addLog(this)">□ 実施</button>
-  </div>
+  <details>
+    <summary class="summary-row">
+    <span>③ ステップ台ヒップドリフト</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
   <details>
     <img src="images/hipdrift-1.jpg" alt="ステップ台ヒップドリフト">
     <p><b>目的：</b>骨盤の滑走を滑らかにし、重心移動を制御。</p>
@@ -168,10 +189,11 @@ footer {
 </section>
 
 <section>
-  <div class="header-row">
-    <summary>④ リブケージ・プレス</summary>
-    <button class="check" onclick="addLog(this)">□ 実施</button>
-  </div>
+  <details>
+    <summary class="summary-row">
+    <span>④ リブケージ・プレス</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
   <details>
     <img src="images/press-1.jpg" alt="リブケージ・プレス">
     <p><b>目的：</b>肋骨圧縮による体幹からの力伝達を学ぶ。</p>
@@ -181,10 +203,11 @@ footer {
 </section>
 
 <section>
-  <div class="header-row">
-    <summary>⑤ MBリブケージ・リード・ドリル</summary>
-    <button class="check" onclick="addLog(this)">□ 実施</button>
-  </div>
+  <details>
+    <summary class="summary-row">
+    <span>⑤ MBリブケージ・リード・ドリル</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
   <details>
     <img src="images/mblead-1.jpg" alt="MBリブケージ・リード・ドリル">
     <p><b>目的：</b>肋骨主導で波のような出力伝達を体得する。</p>
@@ -194,10 +217,11 @@ footer {
 </section>
 
 <section>
-  <div class="header-row">
-    <summary>⑥ WBリブケージ・リード・ドリル</summary>
-    <button class="check" onclick="addLog(this)">□ 実施</button>
-  </div>
+  <details>
+    <summary class="summary-row">
+    <span>⑥ WBリブケージ・リード・ドリル</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
   <details>
     <img src="images/wblead-1.jpg" alt="WBリブケージ・リード・ドリル">
     <p><b>目的：</b>ウォーターバッグの流体抵抗と身体波動を同期。</p>
@@ -207,10 +231,11 @@ footer {
 </section>
 
 <section>
-  <div class="header-row">
-    <summary>⑦ BIG3（スクワット／デッドリフト／ベンチプレス）</summary>
-    <button class="check" onclick="addLog(this)">□ 実施</button>
-  </div>
+  <details>
+    <summary class="summary-row">
+    <span>⑦ BIG3（スクワット／デッドリフト／ベンチプレス）</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
   <details>
     <ul style="margin-top:6px; color:#ccc; font-size:0.9em; line-height:1.6;">
       <li>スクワット：体幹の固定と下肢出力の協調</li>
