@@ -261,10 +261,12 @@ window.onload = () => {
 function addLog(btn){
   const section = btn.closest("section");
   const id = Array.from(document.querySelectorAll("section")).indexOf(section) + 1;
+
   const today = new Date();
   const dateStr = ("0"+(today.getMonth()+1)).slice(-2)+"/"+("0"+today.getDate()).slice(-2);
   let logData = JSON.parse(localStorage.getItem(`log${id}_${monthKey}`)) || [];
 
+  // === まだ今日の記録がない場合 ===
   if(!logData.includes(dateStr)){
     logData.push(dateStr);
     localStorage.setItem(`log${id}_${monthKey}`, JSON.stringify(logData));
@@ -275,16 +277,18 @@ function addLog(btn){
     btn.textContent = "✔ 完了";
     btn.classList.add("done");
 
-  // ✅週カウント更新：同じ日には1回だけカウント
-const todayKey = `${weekKey}_${("0"+(today.getMonth()+1)).slice(-2)}${("0"+today.getDate()).slice(-2)}`;
-if (!localStorage.getItem(todayKey)) {
-  localStorage.setItem(todayKey, "true");
-  let weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
-  weekCount++;
-  localStorage.setItem(`weekCount_${weekKey}`, weekCount);
-  updateProgressBar();
-} 
-  else {
+    // ✅週カウント更新：同じ日には1回だけカウント
+    const todayKey = `${weekKey}_${("0"+(today.getMonth()+1)).slice(-2)}${("0"+today.getDate()).slice(-2)}`;
+    if (!localStorage.getItem(todayKey)) {
+      localStorage.setItem(todayKey, "true");
+      let weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
+      weekCount++;
+      localStorage.setItem(`weekCount_${weekKey}`, weekCount);
+      updateProgressBar();
+    }
+
+  // === すでに記録済み → 削除処理 ===
+  } else {
     if(confirm("この日の記録を削除しますか？")){
       logData = logData.filter(x=>x!==dateStr);
       localStorage.setItem(`log${id}_${monthKey}`, JSON.stringify(logData));
