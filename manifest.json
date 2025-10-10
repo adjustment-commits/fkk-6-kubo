@@ -1,23 +1,48 @@
 {
   "name": "リブケージ連動トレーニングログ",
-  "short_name": "リブケージログ",
+  "short_name": "RibCage Log",
+  "description": "© adjustment-lab | リブケージ連動トレーニング記録アプリ",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#111111",
-  "theme_color": "#ffcc00",
   "orientation": "portrait",
-  "description": "肋骨と骨盤の波動連動を可視化し、年間で習慣化するトレーニングログアプリ。",
+  "background_color": "#111111",
+  "theme_color": "#ff6600",
   "icons": [
     {
       "src": "images/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "images/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "splash_pages": null
+  "screenshots": [
+    {
+      "src": "images/splash.png",
+      "sizes": "1280x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "スプラッシュ画面"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "今日のトレーニングを記録",
+      "short_name": "記録",
+      "url": "./index.html",
+      "icons": [{ "src": "images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "年間ログを見る",
+      "short_name": "年間",
+      "url": "./index.html#yearlyLog",
+      "icons": [{ "src": "images/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
 }
