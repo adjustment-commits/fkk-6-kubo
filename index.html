@@ -265,18 +265,20 @@ function addLog(btn){
   const dateStr = ("0"+(today.getMonth()+1)).slice(-2)+"/"+("0"+today.getDate()).slice(-2);
   let logData = JSON.parse(localStorage.getItem(`log${id}_${monthKey}`)) || [];
 
-  // === 新規実施 ===
+  // === 今日がまだ記録されていない場合 ===
   if(!logData.includes(dateStr)){
+    // ログ登録
     logData.push(dateStr);
     localStorage.setItem(`log${id}_${monthKey}`, JSON.stringify(logData));
     document.getElementById(`log${id}`).textContent = logData.join("・");
     localStorage.setItem(`last${id}_${monthKey}`, dateStr);
     document.getElementById(`last${id}`).textContent = dateStr;
 
+    // ボタン表示変更
     btn.textContent = "✔ 完了";
     btn.classList.add("done");
 
-    // ✅ 同じ日には1回だけ週カウント
+    // ✅ 同じ日に1回だけ週カウント
     const todayKey = `${weekKey}_${("0"+(today.getMonth()+1)).slice(-2)}${("0"+today.getDate()).slice(-2)}`;
     if (!localStorage.getItem(todayKey)) {
       localStorage.setItem(todayKey, "true");
@@ -286,15 +288,19 @@ function addLog(btn){
       updateProgressBar();
     }
 
-  // === すでに記録済み → 削除処理 ===
+  // === すでに今日の記録がある場合（＝2回目のクリック） ===
   } else {
     if(confirm("この日の記録を削除しますか？")){
+      // 記録削除
       logData = logData.filter(x=>x!==dateStr);
       localStorage.setItem(`log${id}_${monthKey}`, JSON.stringify(logData));
       document.getElementById(`log${id}`).textContent = logData.join("・");
+
       const newLast = logData.length > 0 ? logData[logData.length-1] : "―";
       localStorage.setItem(`last${id}_${monthKey}`, newLast);
       document.getElementById(`last${id}`).textContent = newLast;
+
+      // ボタンリセット
       btn.textContent = "□ 実施";
       btn.classList.remove("done");
     }
