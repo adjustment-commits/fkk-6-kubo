@@ -121,14 +121,12 @@ footer {
 }
 </style>
 </head>
-
 <body>
-<h1>リブケージ連動トレーニングログ</h1>
 
+<h1>リブケージ連動トレーニングログ</h1>
 <div class="progress-container">
   <div class="progress-bar" id="progressBar">今週 0 / 2 回</div>
 </div>
-
 <!-- ==== 各ドリル ==== -->
 <section>
   <details>
@@ -142,6 +140,97 @@ footer {
     <p class="last">最終実施日：<span id="last1">―</span></p>
   </details>
 </section>
+
+<section>
+  <details>
+    <summary class="summary-row">
+      <span>② リブケージ・バウンス</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
+    <img src="images/bounce-1.jpg" alt="リブケージ・バウンス">
+    <p><b>目的：</b>肋骨の圧縮反射で上下のバネ反応を高める。</p>
+    <p class="log">今月の実施日：<span id="log2"></span></p>
+    <p class="last">最終実施日：<span id="last2">―</span></p>
+  </details>
+</section>
+
+<section>
+  <details>
+    <summary class="summary-row">
+      <span>③ ステップ台ヒップドリフト</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
+    <img src="images/hipdrift-1.jpg" alt="ステップ台ヒップドリフト">
+    <p><b>目的：</b>骨盤の滑走を滑らかにし、重心移動を制御。</p>
+    <p class="log">今月の実施日：<span id="log3"></span></p>
+    <p class="last">最終実施日：<span id="last3">―</span></p>
+  </details>
+</section>
+
+<section>
+  <details>
+    <summary class="summary-row">
+      <span>④ リブケージ・プレス</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
+    <img src="images/press-1.jpg" alt="リブケージ・プレス">
+    <p><b>目的：</b>肋骨圧縮による体幹からの力伝達を学ぶ。</p>
+    <p class="log">今月の実施日：<span id="log4"></span></p>
+    <p class="last">最終実施日：<span id="last4">―</span></p>
+  </details>
+</section>
+
+<section>
+  <details>
+    <summary class="summary-row">
+      <span>⑤ MBリブケージ・リード・ドリル</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
+    <img src="images/mblead-1.jpg" alt="MBリブケージ・リード・ドリル">
+    <p><b>目的：</b>肋骨主導で波のような出力伝達を体得する。</p>
+    <p class="log">今月の実施日：<span id="log5"></span></p>
+    <p class="last">最終実施日：<span id="last5">―</span></p>
+  </details>
+</section>
+
+<section>
+  <details>
+    <summary class="summary-row">
+      <span>⑥ WBリブケージ・リード・ドリル</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
+    <img src="images/wblead-1.jpg" alt="WBリブケージ・リード・ドリル">
+    <p><b>目的：</b>ウォーターバッグの流体抵抗と身体波動を同期。</p>
+    <p class="log">今月の実施日：<span id="log6"></span></p>
+    <p class="last">最終実施日：<span id="last6">―</span></p>
+  </details>
+</section>
+
+<section>
+  <details>
+    <summary class="summary-row">
+      <span>⑦ BIG3（スクワット／デッドリフト／ベンチプレス）</span>
+      <button class="check" onclick="addLog(this)">□ 実施</button>
+    </summary>
+    <ul style="margin-top:6px; color:#ccc; font-size:0.9em; line-height:1.6;">
+      <li>スクワット：体幹の固定と下肢出力の協調</li>
+      <li>デッドリフト：骨盤滑走と背部伝達の統合</li>
+      <li>ベンチプレス：胸郭圧縮と押し出し連動の強化</li>
+    </ul>
+    <p class="log">今月の実施日：<span id="log7"></span></p>
+    <p class="last">最終実施日：<span id="last7">―</span></p>
+  </details>
+</section>
+
+<!-- 🔄 手動リセット -->
+<button id="reset" onclick="resetAll()">🔄 全リセット</button>
+
+<!-- 📅 年間ログ -->
+<h2 style="color:#ff0; margin-top:40px;">年間トレーニングログ</h2>
+<div id="yearlyLog" style="display:grid; grid-template-columns:repeat(13,1fr); gap:4px; margin-top:10px;"></div>
+<p id="yearRate" style="color:#0ff; margin-top:10px; text-align:center;"></p>
+
+<footer>©2025 adjustment-lab｜リブケージ連動トレーニングログ</footer>
 <script>
 // ===== 定数 =====
 const drills = 7;
@@ -195,7 +284,7 @@ function addLog(btn){
     btn.textContent = "✔ 完了";
     btn.classList.add("done");
 
-    // ✅ 週カウントは1日1回
+    // ✅ 週カウントは1日1回のみ
     if(!localStorage.getItem(`${weekKey}_today`)){
       localStorage.setItem(`${weekKey}_today`, "true");
       let weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
@@ -223,7 +312,9 @@ function addLog(btn){
 function getTodayStr(){
   const d = new Date();
   return ("0"+(d.getMonth()+1)).slice(-2)+"/"+("0"+d.getDate()).slice(-2);
-}// ===== 進捗バー更新 =====
+}
+
+// ===== 進捗バー更新 =====
 function updateProgressBar(){
   let weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
   if(weekCount < 0) weekCount = 0;
@@ -333,12 +424,9 @@ function resetAll(){
     updateYearlyLog();
   }
 }
-</script>
 
-<!-- ✅ スマホ用の詳細開閉修正スクリプト -->
-<script>
+// ===== スマホ用detailsバグ対策 =====
 document.addEventListener("DOMContentLoaded", () => {
-  // iPhone / iPadでdetailsタグが反応しないバグ対策
   document.querySelectorAll("summary").forEach(summary => {
     summary.addEventListener("click", e => {
       const details = summary.parentNode;
@@ -351,6 +439,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
 </body>
 </html>
