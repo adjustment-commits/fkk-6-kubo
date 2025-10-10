@@ -1,8 +1,9 @@
-const CACHE_NAME = "ribcage-log-v1";
+const CACHE_NAME = "ribcage-log-v2";
 const urlsToCache = [
   "./",
   "./index.html",
   "./manifest.json",
+  "./offline.html",
   "./images/deadbug-1.jpg",
   "./images/bounce-1.jpg",
   "./images/hipdrift-1.jpg",
@@ -11,21 +12,23 @@ const urlsToCache = [
   "./images/wblead-1.jpg"
 ];
 
-// インストール時：キャッシュ保存
+// インストール
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
   );
 });
 
-// オフライン時：キャッシュを返す
+// フェッチ（オフライン時フォールバック）
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => response || fetch(event.request))
+    fetch(event.request).catch(() => caches.match(event.request).then((response) => {
+      return response || caches.match("./offline.html");
+    }))
   );
 });
 
-// 新バージョン検出時：古いキャッシュ削除
+// アクティベート（古いキャッシュ削除）
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
