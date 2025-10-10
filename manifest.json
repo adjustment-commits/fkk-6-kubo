@@ -6,6 +6,7 @@
   "background_color": "#111111",
   "theme_color": "#ffcc00",
   "orientation": "portrait",
+  "description": "肋骨と骨盤の波動連動を可視化し、年間で習慣化するトレーニングログアプリ。",
   "icons": [
     {
       "src": "images/icon-192.png",
@@ -17,5 +18,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "splash_pages": null
 }
