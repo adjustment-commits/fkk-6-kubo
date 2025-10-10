@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>リブケージ連動トレーニングログ</title>
+
 <style>
 body {
   font-family: system-ui, sans-serif;
@@ -11,7 +12,12 @@ body {
   margin:0; padding:20px;
   line-height:1.7; overflow-x:hidden;
 }
-h1 { text-align:center; color:#ff0; font-size:1.4em; margin-bottom:10px; }
+h1 { 
+  text-align:center; 
+  color:#ff0; 
+  font-size:1.4em; 
+  margin-bottom:10px; 
+}
 
 /* 🌊 進捗バーコンテナ */
 .progress-container {
@@ -66,18 +72,47 @@ h1 { text-align:center; color:#ff0; font-size:1.4em; margin-bottom:10px; }
   100% { left: 100%; opacity: 0; }
 }
 
-/* ==== 残りの基本デザイン ==== */
-section { background:#222; border-radius:8px; padding:12px 16px; margin-bottom:12px; position:relative; }
-summary { font-weight:bold; color:#ff0; font-size:1.1em; cursor:pointer; }
-img { width:100%; border-radius:8px; margin-top:8px; }
-button.check { position:absolute; top:10px; right:12px; background:#444; color:#fff; border:none; border-radius:6px; padding:4px 8px; font-size:0.9em; cursor:pointer; }
+/* ==== ドリルセクション基本デザイン ==== */
+section { 
+  background:#222; 
+  border-radius:8px; 
+  padding:12px 16px; 
+  margin-bottom:12px; 
+  position:relative; 
+}
+summary { 
+  font-weight:bold; 
+  color:#ff0; 
+  font-size:1.1em; 
+  cursor:pointer; 
+}
+img { 
+  width:100%; 
+  border-radius:8px; 
+  margin-top:8px; 
+}
+button.check { 
+  position:absolute; 
+  top:10px; right:12px; 
+  background:#444; color:#fff; 
+  border:none; border-radius:6px; 
+  padding:4px 8px; font-size:0.9em; 
+  cursor:pointer; 
+}
 button.check.done { background:#0a0; color:#fff; }
-#reset { display:block; width:100%; background:#900; color:#fff; font-size:1em; padding:10px; border:none; border-radius:6px; margin-top:25px; cursor:pointer; }
+#reset { 
+  display:block; 
+  width:100%; 
+  background:#900; color:#fff; 
+  font-size:1em; padding:10px; 
+  border:none; border-radius:6px; 
+  margin-top:25px; cursor:pointer; 
+}
 .log { color:#0f0; font-size:0.9em; margin-top:8px; }
 .last { color:#0ff; font-size:0.85em; margin-top:3px; }
 footer { text-align:center; margin-top:25px; color:#888; font-size:0.85em; }
 
-/* 月ごとの背景カラー */
+/* 🎨 月ごとの背景カラー（年間ログ用） */
 .month-1 { background:#1e2b50; }
 .month-2 { background:#203d70; }
 .month-3 { background:#275d80; }
@@ -110,9 +145,12 @@ footer { text-align:center; margin-top:25px; color:#888; font-size:0.85em; }
 }
 </style>
 </head>
-<body>
+
+  <body>
 
 <h1>リブケージ連動トレーニングログ</h1>
+
+<!-- 🌊 進捗バー -->
 <div class="progress-container">
   <div class="progress-bar" id="progressBar">今週 0 / 2 回</div>
 </div>
@@ -120,7 +158,8 @@ footer { text-align:center; margin-top:25px; color:#888; font-size:0.85em; }
 <!-- 🎉 達成メッセージ -->
 <div id="achieveMessage">🎉 今週の目標達成！ 🎉</div>
 
-<!-- ==== ドリル例 ==== -->
+<!-- ==== 各ドリル ==== -->
+
 <section>
 <button class="check" onclick="addLog(this)">□ 実施</button>
 <details>
@@ -132,17 +171,89 @@ footer { text-align:center; margin-top:25px; color:#888; font-size:0.85em; }
 </details>
 </section>
 
-<!-- ...続く ... -->
+<section>
+<button class="check" onclick="addLog(this)">□ 実施</button>
+<details>
+<summary>② リブケージ・バウンス</summary>
+<img src="images/bounce-1.jpg" alt="リブケージ・バウンス">
+<p><b>目的：</b>肋骨の圧縮反射で上下のバネ反応を高める。</p>
+<p class="log">今月の実施日：<span id="log2"></span></p>
+<p class="last">最終実施日：<span id="last2">―</span></p>
+</details>
+</section>
 
+<section>
+<button class="check" onclick="addLog(this)">□ 実施</button>
+<details>
+<summary>③ ステップ台ヒップドリフト</summary>
+<img src="images/hipdrift-1.jpg" alt="ステップ台ヒップドリフト">
+<p><b>目的：</b>骨盤の滑走を滑らかにし、重心移動を制御。</p>
+<p class="log">今月の実施日：<span id="log3"></span></p>
+<p class="last">最終実施日：<span id="last3">―</span></p>
+</details>
+</section>
+
+<section>
+<button class="check" onclick="addLog(this)">□ 実施</button>
+<details>
+<summary>④ リブケージ・プレス</summary>
+<img src="images/press-1.jpg" alt="リブケージ・プレス">
+<p><b>目的：</b>肋骨圧縮による体幹からの力伝達を学ぶ。</p>
+<p class="log">今月の実施日：<span id="log4"></span></p>
+<p class="last">最終実施日：<span id="last4">―</span></p>
+</details>
+</section>
+
+<section>
+<button class="check" onclick="addLog(this)">□ 実施</button>
+<details>
+<summary>⑤ MBリブケージ・リード・ドリル</summary>
+<img src="images/mblead-1.jpg" alt="MBリブケージ・リード・ドリル">
+<p><b>目的：</b>肋骨主導で波のような出力伝達を体得する。</p>
+<p class="log">今月の実施日：<span id="log5"></span></p>
+<p class="last">最終実施日：<span id="last5">―</span></p>
+</details>
+</section>
+
+<section>
+<button class="check" onclick="addLog(this)">□ 実施</button>
+<details>
+<summary>⑥ WBリブケージ・リード・ドリル</summary>
+<img src="images/wblead-1.jpg" alt="WBリブケージ・リード・ドリル">
+<p><b>目的：</b>ウォーターバッグの流体抵抗と身体波動を同期。</p>
+<p class="log">今月の実施日：<span id="log6"></span></p>
+<p class="last">最終実施日：<span id="last6">―</span></p>
+</details>
+</section>
+
+<section>
+<button class="check" onclick="addLog(this)">□ 実施</button>
+<details>
+<summary>⑦ BIG3（スクワット／デッドリフト／ベンチプレス）</summary>
+<img src="images/big3-1.jpg" alt="BIG3 トレーニング">
+<p><b>目的：</b>全身出力を安定させ、リブケージ連動を統合。</p>
+<p class="log">今月の実施日：<span id="log7"></span></p>
+<p class="last">最終実施日：<span id="last7">―</span></p>
+</details>
+</section>
+
+<!-- 🔄 手動リセット -->
 <button id="reset" onclick="resetAll()">🔄 全リセット</button>
+
+<!-- 📅 年間ログ表示 -->
+<h2 style="color:#ff0; margin-top:40px;">年間トレーニングログ</h2>
+<div id="yearlyLog" style="display:grid; grid-template-columns:repeat(13,1fr); gap:4px; margin-top:10px;"></div>
+<p id="yearRate" style="color:#0ff; margin-top:10px; text-align:center;"></p>
 
 <footer>©2025 adjustment-lab｜リブケージ連動トレーニングログ</footer>
 
 <script>
+// ===== 定数 =====
 const monthKey = new Date().getFullYear() + "-" + ("0"+(new Date().getMonth()+1)).slice(-2);
 const drills = 7;
 const weekKey = getWeekKey();
 
+// ===== 初期ロード =====
 window.onload = () => {
   for(let i=1; i<=drills; i++){
     const logData = JSON.parse(localStorage.getItem(`log${i}_${monthKey}`)) || [];
@@ -153,8 +264,10 @@ window.onload = () => {
   cleanOldMonths();
   cleanOldWeeks();
   updateProgressBar();
+  updateYearlyLog();
 };
 
+// ===== 実施ボタン =====
 function addLog(btn){
   const section = btn.parentElement;
   const id = Array.from(document.querySelectorAll("section")).indexOf(section) + 1;
@@ -168,13 +281,17 @@ function addLog(btn){
     document.getElementById(`log${id}`).textContent = logData.join("・");
     localStorage.setItem(`last${id}_${monthKey}`, dateStr);
     document.getElementById(`last${id}`).textContent = dateStr;
+
     btn.textContent = "✔ 完了";
     btn.classList.add("done");
+
+    // ✅週カウント更新
     let weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
     weekCount++;
     localStorage.setItem(`weekCount_${weekKey}`, weekCount);
     updateProgressBar();
-  } else {
+  } 
+  else {
     if(confirm("この日の記録を削除しますか？")){
       logData = logData.filter(x=>x!==dateStr);
       localStorage.setItem(`log${id}_${monthKey}`, JSON.stringify(logData));
@@ -188,33 +305,81 @@ function addLog(btn){
   }
 }
 
+// ===== 進捗バー更新 =====
 function updateProgressBar(){
   const weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
   const bar = document.getElementById("progressBar");
   const percent = Math.min((weekCount/2)*100, 100);
   bar.style.width = percent + "%";
   bar.textContent = `今週 ${Math.min(weekCount,2)} / 2 回`;
-  bar.style.background = percent >= 100 ? "#0a0" : "#f90";
 
+  // ✅色変化と発光
+  if(percent >= 100){
+    bar.style.background = "linear-gradient(90deg, #00ff55, #33ff99, #00ff55)";
+    bar.style.boxShadow = "0 0 20px rgba(0,255,100,0.6)";
+  } else {
+    bar.style.background = "linear-gradient(90deg, #ff6600, #ffaa33, #ff6600)";
+    bar.style.boxShadow = "0 0 10px rgba(255,165,0,0.4)";
+  }
+
+  // 🎉 達成時アニメーション
   if(percent >= 100 && !localStorage.getItem(`achieved_${weekKey}`)){
     localStorage.setItem(`achieved_${weekKey}`, "true");
     showAchievement();
-    triggerGlow(); // 🌟 達成時に光エフェクト
   }
 }
 
-function triggerGlow(){
-  const bar = document.getElementById("progressBar");
-  bar.classList.add("glow");
-  setTimeout(()=> bar.classList.remove("glow"), 1500);
-}
-
+// ===== 達成メッセージ =====
 function showAchievement(){
   const msg = document.getElementById("achieveMessage");
   msg.style.opacity = 1;
-  setTimeout(()=>{ msg.style.opacity = 0; }, 2000);
+  msg.style.transform = "translate(-50%, -50%) scale(1.1)";
+  setTimeout(()=>{
+    msg.style.opacity = 0;
+    msg.style.transform = "translate(-50%, -50%) scale(1)";
+  }, 2200);
+  updateYearlyLog();
 }
 
+// ===== 年間ログ（更新処理） =====
+function updateYearlyLog(){
+  const year = new Date().getFullYear();
+  const container = document.getElementById("yearlyLog");
+  container.innerHTML = "";
+  let achievedWeeks = 0;
+
+  for(let w=1; w<=52; w++){
+    const weekId = `${year}-W${w}`;
+    const box = document.createElement("div");
+    box.className = `month-${Math.ceil(w / 4.3)}`;
+    box.style.width = "100%";
+    box.style.aspectRatio = "1 / 1";
+    box.style.borderRadius = "3px";
+    box.style.display = "flex";
+    box.style.alignItems = "center";
+    box.style.justifyContent = "center";
+    box.style.fontSize = "0.7em";
+    box.textContent = w.toString().padStart(2,"0");
+
+    if(localStorage.getItem(`achieved_${weekId}`)){
+      box.style.border = "2px solid #0f0";
+      box.style.color = "#fff";
+      achievedWeeks++;
+    } else {
+      box.style.border = "1px solid #333";
+      box.style.color = "#bbb";
+      box.style.opacity = 0.6;
+    }
+
+    container.appendChild(box);
+  }
+
+  const rate = ((achievedWeeks/52)*100).toFixed(1);
+  document.getElementById("yearRate").textContent = 
+    `年間達成率：${rate}%（${achievedWeeks}/52週）`;
+}
+
+// ===== 週キー生成 =====
 function getWeekKey(){
   const today = new Date();
   const onejan = new Date(today.getFullYear(),0,1);
@@ -222,6 +387,7 @@ function getWeekKey(){
   return `${today.getFullYear()}-W${week}`;
 }
 
+// ===== 古いデータ自動削除 =====
 function cleanOldMonths(){
   const nowMonth = monthKey;
   Object.keys(localStorage).forEach(k=>{
@@ -230,6 +396,7 @@ function cleanOldMonths(){
     }
   });
 }
+
 function cleanOldWeeks(){
   const nowWeek = weekKey;
   Object.keys(localStorage).forEach(k=>{
@@ -239,6 +406,7 @@ function cleanOldWeeks(){
   });
 }
 
+// ===== 手動リセット =====
 function resetAll(){
   if(confirm("全ての履歴を削除しますか？")){
     Object.keys(localStorage).forEach(k=>{
@@ -253,6 +421,7 @@ function resetAll(){
       btn.classList.remove("done");
     }
     updateProgressBar();
+    updateYearlyLog();
   }
 }
 </script>
