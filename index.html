@@ -255,28 +255,56 @@ window.onload = () => {
   cleanOldMonths();
   cleanOldWeeks();
 
-  Object.keys(localStorage).forEach(k=>{
-    if(k.includes("_today")) localStorage.removeItem(k);
-  });
+  const today = getTodayStr();
+  const lastOpenDate = localStorage.getItem("lastOpenDate");
 
-  for(let i=1; i<=drills; i++){
+  // 🌙 日付が変わったら今日以外の「✔完了」をリセット
+  if (lastOpenDate && lastOpenDate !== today) {
+    resetDailyButtons();
+  }
+
+  // 今日の日付を保存（次回比較用）
+  localStorage.setItem("lastOpenDate", today);
+
+  // 🌙 翌日リセット後、ボタン状態を今日の実施履歴で再判定
+  for (let i = 1; i <= drills; i++) {
     const logData = JSON.parse(localStorage.getItem(`log${i}_${monthKey}`)) || [];
     const lastDate = localStorage.getItem(`last${i}_${monthKey}`) || "―";
     document.getElementById(`log${i}`).textContent = logData.join("・");
     document.getElementById(`last${i}`).textContent = lastDate;
 
-    const today = getTodayStr();
-    const btn = document.querySelectorAll(".check")[i-1];
-    if(logData.includes(today)) {
+    const btn = document.querySelectorAll(".check")[i - 1];
+    if (logData.includes(today)) {
       btn.textContent = "✔ 完了";
       btn.classList.add("done");
+    } else {
+      btn.textContent = "□ GO";
+      btn.classList.remove("done");
     }
   }
-
-  updateProgressBar();
+ updateProgressBar();
   updateYearlyLog();
+
+  // 🌞 5分ごとに日付変化を監視（開きっぱなしでも翌日更新）
+  setInterval(() => {
+    const now = getTodayStr();
+    const stored = localStorage.getItem("lastOpenDate");
+    if (stored !== now) {
+      resetDailyButtons();
+      localStorage.setItem("lastOpenDate", now);
+      updateProgressBar();
+    }
+  }, 300000); // 5分ごとチェック
 };
 
+// ===== 日次ボタンリセット関数 =====
+function resetDailyButtons() {
+  for (let i = 1; i <= drills; i++) {
+    const btn = document.querySelectorAll(".check")[i - 1];
+    btn.textContent = "□ GO";
+    btn.classList.remove("done");
+  }
+}
 // ===== 実施ボタン =====
 function addLog(btn){
   const section = btn.closest("section");
