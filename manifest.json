@@ -1,48 +1,29 @@
 {
   "name": "リブケージ連動トレーニングログ",
   "short_name": "RibCage Log",
-  "description": "© adjustment-lab | リブケージ連動トレーニング記録アプリ",
+  "description": "© adjustment-lab｜週2回のリブケージ連動トレーニングを記録するWebアプリ",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#111111",
+  "background_color": "#000000",
   "theme_color": "#ff6600",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "images/icon-192.png",
+      "src": "./images/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "images/icon-512.png",
+      "src": "./images/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ],
-  "screenshots": [
+  "splash_screens": [
     {
-      "src": "images/splash.png",
-      "sizes": "1280x1920",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "スプラッシュ画面"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "今日のトレーニングを記録",
-      "short_name": "記録",
-      "url": "./index.html",
-      "icons": [{ "src": "images/icon-192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "年間ログを見る",
-      "short_name": "年間",
-      "url": "./index.html#yearlyLog",
-      "icons": [{ "src": "images/icon-192.png", "sizes": "192x192" }]
+      "src": "./images/splash-portrait.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg"
     }
   ]
 }
