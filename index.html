@@ -431,12 +431,14 @@ function cleanOldMonths(){
 function cleanOldWeeks(){
   const nowWeek = weekKey;
   Object.keys(localStorage).forEach(k=>{
+    // 過去週データのみ削除
     if((k.startsWith("weekCount") || k.startsWith("achieved")) && !k.includes(nowWeek)){
       localStorage.removeItem(k);
     }
-    if(k.includes("_") && k.startsWith(nowWeek) === false){
-  localStorage.removeItem(k);  
-  }
+    // 今日の日付キーは削除しない
+    if(k.includes("_") && !k.startsWith(nowWeek + "_")){
+      localStorage.removeItem(k);
+    }
   });
 }
 
