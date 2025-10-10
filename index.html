@@ -83,22 +83,17 @@ summary.summary-row {
   list-style:none;
   color:#ff0;
   font-weight:bold;
-  font-size:1.05em;
+  font-size:clamp(0.85em, 3vw, 1.05em); /* ← 画面幅に応じて文字サイズ可変 */
   cursor:pointer;
   padding:6px 0;
+  white-space:nowrap; /* 改行禁止 */
+  overflow:hidden; /* はみ出し防止 */
 }
+
 button.check {
-  background:#444;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  padding:6px 12px;
-  font-size:0.9em;
-  cursor:pointer;
-}
-button.check.done {
-  background:#0a0;
-  color:#fff;
+  flex-shrink:0;
+  margin-left:8px;
+  font-size:clamp(0.8em, 2.8vw, 0.9em); /* ボタン文字も可変 */
 }
 
 /* スマホで開閉時に強調 */
