@@ -51,7 +51,7 @@ h1 {
   100%{background-position:0 0;}
 }
 
-/* ✅ ドリル構成：タイトルとボタンを横並びに */
+/* ✅ セクション配置 */
 section {
   background:#222;
   border-radius:8px;
@@ -63,7 +63,7 @@ section {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  flex-wrap:wrap; /* スマホで折り返し */
+  flex-wrap:wrap;
   gap:6px;
 }
 
@@ -76,7 +76,6 @@ section {
   list-style:none;
 }
 
-/* ボタンを右に配置・被らない */
 button.check {
   background:#444;
   color:#fff;
@@ -92,7 +91,6 @@ button.check.done {
   color:#fff;
 }
 
-/* 画像 */
 img {
   width:100%;
   border-radius:8px;
@@ -122,17 +120,14 @@ footer {
 }
 </style>
 </head>
-
-  <body>
+<body>
 <h1>リブケージ連動トレーニングログ</h1>
 
-<!-- 🌊 進捗バー -->
 <div class="progress-container">
   <div class="progress-bar" id="progressBar">今週 0 / 2 回</div>
 </div>
 
 <!-- ==== 各ドリル ==== -->
-
 <section>
   <div class="header-row">
     <summary>① リブケージ・デッドバグ</summary>
@@ -230,13 +225,12 @@ footer {
 <!-- 🔄 手動リセット -->
 <button id="reset" onclick="resetAll()">🔄 全リセット</button>
 
-<!-- 📅 年間ログ表示 -->
+<!-- 📅 年間ログ -->
 <h2 style="color:#ff0; margin-top:40px;">年間トレーニングログ</h2>
 <div id="yearlyLog" style="display:grid; grid-template-columns:repeat(13,1fr); gap:4px; margin-top:10px;"></div>
 <p id="yearRate" style="color:#0ff; margin-top:10px; text-align:center;"></p>
 
 <footer>©2025 adjustment-lab｜リブケージ連動トレーニングログ</footer>
-
 <script>
 // ===== 定数 =====
 const drills = 7;
@@ -245,14 +239,19 @@ const weekKey = getWeekKey();
 
 // ===== 初期ロード =====
 window.onload = () => {
+  // 前週データを掃除
+  cleanOldMonths();
+  cleanOldWeeks();
+  localStorage.removeItem(`achieved_${weekKey}`); // 誤認防止
+  
+  // ログ復元
   for(let i=1; i<=drills; i++){
     const logData = JSON.parse(localStorage.getItem(`log${i}_${monthKey}`)) || [];
     const lastDate = localStorage.getItem(`last${i}_${monthKey}`) || "―";
     document.getElementById(`log${i}`).textContent = logData.join("・");
     document.getElementById(`last${i}`).textContent = lastDate;
   }
-  cleanOldMonths();
-  cleanOldWeeks();
+
   updateProgressBar();
   updateYearlyLog();
 };
@@ -266,7 +265,7 @@ function addLog(btn){
   const dateStr = ("0"+(today.getMonth()+1)).slice(-2)+"/"+("0"+today.getDate()).slice(-2);
   let logData = JSON.parse(localStorage.getItem(`log${id}_${monthKey}`)) || [];
 
-  // === まだ今日の記録がない場合 ===
+  // === 新規実施 ===
   if(!logData.includes(dateStr)){
     logData.push(dateStr);
     localStorage.setItem(`log${id}_${monthKey}`, JSON.stringify(logData));
@@ -277,7 +276,7 @@ function addLog(btn){
     btn.textContent = "✔ 完了";
     btn.classList.add("done");
 
-    // ✅週カウント更新：同じ日には1回だけカウント
+    // ✅ 同じ日には1回だけ週カウント
     const todayKey = `${weekKey}_${("0"+(today.getMonth()+1)).slice(-2)}${("0"+today.getDate()).slice(-2)}`;
     if (!localStorage.getItem(todayKey)) {
       localStorage.setItem(todayKey, "true");
@@ -286,6 +285,7 @@ function addLog(btn){
       localStorage.setItem(`weekCount_${weekKey}`, weekCount);
       updateProgressBar();
     }
+
   // === すでに記録済み → 削除処理 ===
   } else {
     if(confirm("この日の記録を削除しますか？")){
@@ -303,7 +303,12 @@ function addLog(btn){
 
 // ===== 進捗バー更新 =====
 function updateProgressBar(){
-  const weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
+  let weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
+
+  // ⚙️ 安全チェック：上限・下限補正
+  if(weekCount < 0) weekCount = 0;
+  if(weekCount > 2) weekCount = 2;
+
   const bar = document.getElementById("progressBar");
   const percent = Math.min((weekCount/2)*100, 100);
   bar.style.width = percent + "%";
@@ -323,7 +328,7 @@ function updateProgressBar(){
   }
 }
 
-// ===== 年間ログ（更新処理） =====
+// ===== 年間ログ =====
 function updateYearlyLog(){
   const year = new Date().getFullYear();
   const container = document.getElementById("yearlyLog");
@@ -377,10 +382,16 @@ function cleanOldMonths(){
     }
   });
 }
+
 function cleanOldWeeks(){
   const nowWeek = weekKey;
   Object.keys(localStorage).forEach(k=>{
+    // 🧹 週ログ・達成データ削除
     if((k.startsWith("weekCount") || k.startsWith("achieved")) && !k.includes(nowWeek)){
+      localStorage.removeItem(k);
+    }
+    // 🧹 今日キー（例: 2025-W41_1009）削除
+    if(/^20\d{2}-W\d+_\d{4}$/.test(k) && !k.startsWith(nowWeek)){
       localStorage.removeItem(k);
     }
   });
@@ -390,8 +401,9 @@ function cleanOldWeeks(){
 function resetAll(){
   if(confirm("全ての履歴を削除しますか？")){
     Object.keys(localStorage).forEach(k=>{
-      if(k.startsWith("log") || k.startsWith("last") || k.startsWith("weekCount") || k.startsWith("achieved"))
+      if(k.startsWith("log") || k.startsWith("last") || k.startsWith("weekCount") || k.startsWith("achieved") || /^20\d{2}-W\d+_\d{4}$/.test(k)){
         localStorage.removeItem(k);
+      }
     });
     for(let i=1; i<=drills; i++){
       document.getElementById(`log${i}`).textContent = "";
