@@ -266,7 +266,7 @@ window.onload = () => {
   // 今日の日付を保存（次回比較用）
   localStorage.setItem("lastOpenDate", today);
 
-  // 🌙 翌日リセット後、ボタン状態を今日の実施履歴で再判定
+  // 🌙 ボタン・ログ復元
   for (let i = 1; i <= drills; i++) {
     const logData = JSON.parse(localStorage.getItem(`log${i}_${monthKey}`)) || [];
     const lastDate = localStorage.getItem(`last${i}_${monthKey}`) || "―";
@@ -282,10 +282,11 @@ window.onload = () => {
       btn.classList.remove("done");
     }
   }
- updateProgressBar();
+
+  updateProgressBar();
   updateYearlyLog();
 
-  // 🌞 5分ごとに日付変化を監視（開きっぱなしでも翌日更新）
+  // 🌞 5分ごとに日付変化を監視
   setInterval(() => {
     const now = getTodayStr();
     const stored = localStorage.getItem("lastOpenDate");
@@ -297,14 +298,6 @@ window.onload = () => {
   }, 300000); // 5分ごとチェック
 };
 
-// ===== 日次ボタンリセット関数 =====
-function resetDailyButtons() {
-  for (let i = 1; i <= drills; i++) {
-    const btn = document.querySelectorAll(".check")[i - 1];
-    btn.textContent = "□ GO";
-    btn.classList.remove("done");
-  }
-}
 // ===== 実施ボタン =====
 function addLog(btn){
   const section = btn.closest("section");
@@ -313,6 +306,7 @@ function addLog(btn){
   let logData = JSON.parse(localStorage.getItem(`log${id}_${monthKey}`)) || [];
 
   if(!logData.includes(today)){
+    // 🌟 新規実施
     logData.push(today);
     localStorage.setItem(`log${id}_${monthKey}`, JSON.stringify(logData));
     localStorage.setItem(`last${id}_${monthKey}`, today);
@@ -321,16 +315,18 @@ function addLog(btn){
     btn.textContent = "✔ 完了";
     btn.classList.add("done");
 
-  const todayKey = `${weekKey}_${today}`;
-if(!localStorage.getItem(todayKey)){
-  localStorage.setItem(todayKey, "true");
-  let weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
-  weekCount++;
-  localStorage.setItem(`weekCount_${weekKey}`, weekCount);
-  updateProgressBar();
-}
+    // 🌟 週カウントをインクリメント（1日1回だけ）
+    const todayKey = `done_${today}`;
+    if(!localStorage.getItem(todayKey)){
+      localStorage.setItem(todayKey, "true");
+      let weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
+      weekCount++;
+      localStorage.setItem(`weekCount_${weekKey}`, weekCount);
+      updateProgressBar();
+    }
 
   } else {
+    // 🌙 削除処理
     if(confirm("この日の記録を削除しますか？")){
       logData = logData.filter(x=>x!==today);
       localStorage.setItem(`log${id}_${monthKey}`, JSON.stringify(logData));
@@ -338,7 +334,7 @@ if(!localStorage.getItem(todayKey)){
       localStorage.setItem(`last${id}_${monthKey}`, newLast);
       document.getElementById(`log${id}`).textContent = logData.join("・");
       document.getElementById(`last${id}`).textContent = newLast;
-      btn.textContent = "□ 実施";
+      btn.textContent = "□ GO";
       btn.classList.remove("done");
     }
   }
@@ -431,29 +427,24 @@ function cleanOldMonths(){
 function cleanOldWeeks(){
   const nowWeek = weekKey;
   Object.keys(localStorage).forEach(k=>{
-    // ✅ 過去の週のカウント・達成情報だけ削除
-    if ((k.startsWith("weekCount") || k.startsWith("achieved")) && !k.includes(nowWeek)) {
+    if(k.startsWith("weekCount") && !k.includes(nowWeek)){
       localStorage.removeItem(k);
     }
-    // ❌ 今週のtodayKeyは消さない（以前はここで削除していた）
+    if(k.startsWith("achieved") && !k.includes(nowWeek)){
+      localStorage.removeItem(k);
+    }
   });
-}x　¸x
+}
 
 // ===== 全リセット =====
 function resetAll(){
   if(confirm("全ての履歴を削除しますか？")){
-    Object.keys(localStorage).forEach(k=>{
-      if(k.startsWith("log") || k.startsWith("last") || 
-         k.startsWith("weekCount") || k.startsWith("achieved") || 
-         k.endsWith("_today")){
-        localStorage.removeItem(k);
-      }
-    });
+    localStorage.clear();
     for(let i=1; i<=drills; i++){
       document.getElementById(`log${i}`).textContent = "";
       document.getElementById(`last${i}`).textContent = "―";
       const btn = document.querySelectorAll(".check")[i-1];
-      btn.textContent = "□ 実施";
+      btn.textContent = "□ GO";
       btn.classList.remove("done");
     }
     updateProgressBar();
