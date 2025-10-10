@@ -293,8 +293,9 @@ function addLog(btn){
     btn.textContent = "✔ 完了";
     btn.classList.add("done");
 
-    if(!localStorage.getItem(`${weekKey}_today`)){
-      localStorage.setItem(`${weekKey}_today`, "true");
+   const todayKey = `${weekKey}_${today}`;  
+if(!localStorage.getItem(todayKey)){
+  localStorage.setItem(todayKey, "true");
       let weekCount = parseInt(localStorage.getItem(`weekCount_${weekKey}`) || "0");
       weekCount++;
       localStorage.setItem(`weekCount_${weekKey}`, weekCount);
@@ -405,9 +406,9 @@ function cleanOldWeeks(){
     if((k.startsWith("weekCount") || k.startsWith("achieved")) && !k.includes(nowWeek)){
       localStorage.removeItem(k);
     }
-    if(k.endsWith("_today") && !k.startsWith(nowWeek)){
-      localStorage.removeItem(k);
-    }
+    if(k.includes("_") && k.startsWith(nowWeek) === false){
+  localStorage.removeItem(k);  
+  }
   });
 }
 
